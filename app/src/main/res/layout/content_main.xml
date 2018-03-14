@@ -8,4 +8,26 @@
     tools:context="com.example.amant.cookingjournal.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/floating_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_searchBarMarginLeft="16dp"
+        app:floatingSearch_searchBarMarginRight="16dp"
+        app:floatingSearch_searchBarMarginTop="16dp"
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.arlib.floatingsearchview.FloatingSearchView>
+
 </android.support.constraint.ConstraintLayout>

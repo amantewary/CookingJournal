@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Cooking Journal</string>
     <string name="action_settings">Settings</string>
+    <array name="cuisine">
+        <item>Select Cuisine</item>
+        <item>American</item>
+        <item>British</item>
+        <item>Chinese</item>
+        <item>French</item>
+        <item>Homestyle</item>
+        <item>Italian</item>
+        <item>Indian</item>
+        <item>Other</item>
+    </array>
 </resources>
