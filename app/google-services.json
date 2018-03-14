@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "179607119926",
+    "firebase_url": "https://cookingjournal-a4160.firebaseio.com",
+    "project_id": "cookingjournal-a4160",
+    "storage_bucket": "cookingjournal-a4160.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179607119926:android:2dbb55e730132b27",
+        "android_client_info": {
+          "package_name": "com.example.amant.cookingjournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179607119926-gn92km261lihast2juhkmspo43o15q50.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amant.cookingjournal",
+            "certificate_hash": "1bc535e2403d841f42682a22ef1ad5d73d67369c"
+          }
+        },
+        {
+          "client_id": "179607119926-mj662jetckh0t66h5s96u5d23at2fqtg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiSyPBGiFyTKjAWtgYa19zsAPwdiUbz-0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179607119926-mj662jetckh0t66h5s96u5d23at2fqtg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
