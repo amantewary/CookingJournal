@@ -73,26 +73,30 @@ public class AddRecipes extends AppCompatActivity {
             dbRecipes.child(id).setValue(recipe);
 
             Toast.makeText(this,"Recipe Added",Toast.LENGTH_SHORT).show();
+            finish();
         }else{
             if (name.matches(""))
-            {               recipeName.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Recipe Name.",Toast.LENGTH_SHORT).show();
+            {
+                recipeName.setBackgroundResource(R.drawable.border_error);
+                recipeName.setError("Enter Recipe Name");
                 return;
             }
             else {
                 recipeName.setBackgroundResource(R.drawable.border);
             }
             if (ingredients.matches(""))
-            {               recipeIngredients.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Ingredients.",Toast.LENGTH_SHORT).show();
+            {
+                recipeIngredients.setBackgroundResource(R.drawable.border_error);
+                recipeIngredients.setError("Enter Recipe Ingredients");
                 return;
             }
             else {
                 recipeIngredients.setBackgroundResource(R.drawable.border);
             }
             if (steps.matches(""))
-            {               recipeSteps.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Recipe Steps.",Toast.LENGTH_SHORT).show();
+            {
+                recipeSteps.setBackgroundResource(R.drawable.border_error);
+                recipeSteps.setError("Enter Recipe Steps");
                 return;
             }
             else {

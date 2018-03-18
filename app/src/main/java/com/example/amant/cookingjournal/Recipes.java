@@ -14,6 +14,10 @@ public class Recipes {
     private String recipeUrl;
     private Float recipeRating;
 
+    public Recipes() {
+
+    }
+
     public Recipes(String recipeId, String recipeName, String recipeIngredients, String recipeSteps, String recipeCuisine, String recipeUrl, Float recipeRating) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
