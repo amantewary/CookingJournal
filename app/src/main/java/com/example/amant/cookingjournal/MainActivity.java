@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,6 +72,26 @@ public class MainActivity extends AppCompatActivity{
 //                startActivity(intent);
 //            }
 //        });
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(!s.toString().isEmpty()){
+                        searchDatabase(s.toString());
+                    }else{
+                        onStart();
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -87,6 +109,29 @@ public class MainActivity extends AppCompatActivity{
                 recipeListView.setAdapter(recipeAdapter);
                 recipeListView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void searchDatabase(final String query){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipeList.clear();
+                for(DataSnapshot searchSnapshot : dataSnapshot.getChildren()){
+                    Recipes recipes = searchSnapshot.getValue(Recipes.class);
+                    String title = recipes.getRecipeTitle();
+                    if(title.toLowerCase().contains(query.toLowerCase())) {
+                        recipeList.add(recipes);
+                    }
+                }
+                recipeAdapter = new RecipeList(MainActivity.this,recipeList);
+                recipeListView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
