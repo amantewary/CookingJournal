@@ -35,13 +35,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/border_search"
+        android:drawableEnd="@drawable/search_icon"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Search Cuisine"
+        android:hint="Search..."
         android:inputType="textPersonName"
         android:padding="7dp"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
