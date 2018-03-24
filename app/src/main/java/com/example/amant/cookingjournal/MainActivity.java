@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     public static final String RECIPE_TITLE = "recipeTitle";
     public static final String RECIPE_INGREDIENTS = "recipeIngrdients";
@@ -29,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String RECIPE_RATING = "recipeRating";
     public static final String RECIPE_URL = "recipeUrl";
 
-    ListView recipeListView;
+    RecyclerView recipeListView;
     List<Recipes> recipeList;
+    RecipeList recipeAdapter;
+    EditText searchBar;
     DatabaseReference databaseReference;
 
     @Override
@@ -38,12 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         databaseReference = FirebaseDatabase.getInstance().getReference("recipe");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recipeListView = (ListView) findViewById(R.id.recipeList);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        recipeListView = findViewById(R.id.recipeList);
         recipeList = new ArrayList<>();
+        searchBar = findViewById(R.id.searchBar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,19 +57,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        recipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//TODO: [REMOVE] Old listView onClickListner().
+//        recipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Recipes recipes = recipeList.get(position);
+//                Intent intent = new Intent(MainActivity.this, RecipeDetails.class);
+//                intent.putExtra(RECIPE_TITLE, recipes.getRecipeTitle());
+//                intent.putExtra(RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
+//                intent.putExtra(RECIPE_STEPS, recipes.getRecipeSteps());
+//                intent.putExtra(RECIPE_CUISINE, recipes.getRecipeCuisine());
+//                intent.putExtra(RECIPE_RATING, recipes.getRecipeRating());
+//                intent.putExtra(RECIPE_URL, recipes.getRecipeUrl());
+//                startActivity(intent);
+//            }
+//        });
+        searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Recipes recipes = recipeList.get(position);
-                Intent intent = new Intent(MainActivity.this, RecipeDetails.class);
-                intent.putExtra(RECIPE_TITLE, recipes.getRecipeTitle());
-                intent.putExtra(RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
-                intent.putExtra(RECIPE_STEPS, recipes.getRecipeSteps());
-                intent.putExtra(RECIPE_CUISINE, recipes.getRecipeCuisine());
-                intent.putExtra(RECIPE_RATING, recipes.getRecipeRating());
-                intent.putExtra(RECIPE_URL, recipes.getRecipeUrl());
-                startActivity(intent);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(!s.toString().isEmpty()){
+                        searchDatabase(s.toString());
+                    }else{
+                        onStart();
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -75,12 +101,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 recipeList.clear();
-                for(DataSnapshot recipeSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot recipeSnapshot : dataSnapshot.getChildren()) {
                     Recipes recipes = recipeSnapshot.getValue(Recipes.class);
                     recipeList.add(recipes);
                 }
-                RecipeList recipeAdapter = new RecipeList(MainActivity.this, recipeList);
+                recipeAdapter = new RecipeList(MainActivity.this, recipeList);
                 recipeListView.setAdapter(recipeAdapter);
+                recipeListView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void searchDatabase(final String query){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipeList.clear();
+                for(DataSnapshot searchSnapshot : dataSnapshot.getChildren()){
+                    Recipes recipes = searchSnapshot.getValue(Recipes.class);
+                    String title = recipes.getRecipeTitle();
+                    if(title.toLowerCase().contains(query.toLowerCase())) {
+                        recipeList.add(recipes);
+                    }
+                }
+                recipeAdapter = new RecipeList(MainActivity.this,recipeList);
+                recipeListView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             }
 
             @Override

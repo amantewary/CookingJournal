@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_main">
 
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recipeList"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,10 +17,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:clipChildren="true"
+        android:clipToPadding="true"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        tools:listitem="@layout/list_recipe_item" />
 
     <EditText
         android:id="@+id/searchBar"
@@ -30,14 +35,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/border_search"
+        android:drawableEnd="@drawable/search_icon"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:padding="5dp"
         android:hint="Search..."
-        android:textSize="24sp"
-        android:drawablePadding="8dp"
-        android:drawableRight="@android:drawable/ic_menu_search"
+        android:inputType="textPersonName"
+        android:padding="7dp"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
