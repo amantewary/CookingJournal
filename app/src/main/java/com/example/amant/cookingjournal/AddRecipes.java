@@ -18,7 +18,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class AddRecipes extends AppCompatActivity {
 
-    private EditText recipeName;
+    private EditText recipeTitle;
     private EditText recipeIngredients;
     private EditText recipeSteps;
     private EditText recipeUrl;
@@ -34,7 +34,7 @@ public class AddRecipes extends AppCompatActivity {
 
         dbRecipes = FirebaseDatabase.getInstance().getReference("recipe");
 
-        recipeName = (EditText) findViewById(R.id.recipeName);
+        recipeTitle = (EditText) findViewById(R.id.recipeTitle);
         recipeIngredients = (EditText) findViewById(R.id.addIngredients);
         recipeSteps = (EditText) findViewById(R.id.addSteps);
         recipeUrl = (EditText) findViewById(R.id.addLink);
@@ -59,7 +59,7 @@ public class AddRecipes extends AppCompatActivity {
     }
 
     private void addRecipe(){
-        String name = recipeName.getText().toString().trim();
+        String name = recipeTitle.getText().toString().trim();
         String ingredients = recipeIngredients.getText().toString().trim();
         String steps = recipeSteps.getText().toString().trim();
         String cuisine = recipeCuisine.getSelectedItem().toString();
@@ -77,12 +77,12 @@ public class AddRecipes extends AppCompatActivity {
         }else{
             if (name.matches(""))
             {
-                recipeName.setBackgroundResource(R.drawable.border_error);
-                recipeName.setError("Enter Recipe Name");
+                recipeTitle.setBackgroundResource(R.drawable.border_error);
+                recipeTitle.setError("Enter Recipe Name");
                 return;
             }
             else {
-                recipeName.setBackgroundResource(R.drawable.border);
+                recipeTitle.setBackgroundResource(R.drawable.border);
             }
             if (ingredients.matches(""))
             {

@@ -37,10 +37,10 @@ public class RecipeList extends ArrayAdapter<Recipes>{
 
         TextView recipeName = (TextView)listItem.findViewById(R.id.viewRecipeName);
         TextView recipeCuisine = (TextView)listItem.findViewById(R.id.viewCuisine);
-        MaterialRatingBar recipeRatings = (MaterialRatingBar)listItem.findViewById(R.id.viewRecipeRating);
+        MaterialRatingBar recipeRatings = (MaterialRatingBar)listItem.findViewById(R.id.recipeDetailRating);
 
         Recipes recipes = recipesList.get(position);
-        recipeName.setText(recipes.getRecipeName());
+        recipeName.setText(recipes.getRecipeTitle());
         recipeCuisine.setText(recipes.getRecipeCuisine());
         recipeRatings.setRating(recipes.getRecipeRating());
 

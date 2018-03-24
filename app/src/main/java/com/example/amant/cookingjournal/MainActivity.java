@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String RECIPE_TITLE = "recipeTitle";
+    public static final String RECIPE_INGREDIENTS = "recipeIngrdients";
+    public static final String RECIPE_STEPS = "recipeSteps";
+    public static final String RECIPE_CUISINE = "recipeCuisine";
+    public static final String RECIPE_RATING = "recipeRating";
+    public static final String RECIPE_URL = "recipeUrl";
 
     ListView recipeListView;
     List<Recipes> recipeList;
@@ -40,6 +48,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddRecipes.class);
+                startActivity(intent);
+            }
+        });
+
+        recipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Recipes recipes = recipeList.get(position);
+                Intent intent = new Intent(MainActivity.this, RecipeDetails.class);
+                intent.putExtra(RECIPE_TITLE, recipes.getRecipeTitle());
+                intent.putExtra(RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
+                intent.putExtra(RECIPE_STEPS, recipes.getRecipeSteps());
+                intent.putExtra(RECIPE_CUISINE, recipes.getRecipeCuisine());
+                intent.putExtra(RECIPE_RATING, recipes.getRecipeRating());
+                intent.putExtra(RECIPE_URL, recipes.getRecipeUrl());
                 startActivity(intent);
             }
         });
