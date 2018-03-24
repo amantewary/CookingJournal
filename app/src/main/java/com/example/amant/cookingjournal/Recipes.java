@@ -7,16 +7,20 @@ package com.example.amant.cookingjournal;
 public class Recipes {
 
     private String recipeId;
-    private String recipeName;
+    private String recipeTitle;
     private String recipeIngredients;
     private String recipeSteps;
     private String recipeCuisine;
     private String recipeUrl;
     private Float recipeRating;
 
-    public Recipes(String recipeId, String recipeName, String recipeIngredients, String recipeSteps, String recipeCuisine, String recipeUrl, Float recipeRating) {
+    public Recipes() {
+
+    }
+
+    public Recipes(String recipeId, String recipeTitle, String recipeIngredients, String recipeSteps, String recipeCuisine, String recipeUrl, Float recipeRating) {
         this.recipeId = recipeId;
-        this.recipeName = recipeName;
+        this.recipeTitle = recipeTitle;
         this.recipeIngredients = recipeIngredients;
         this.recipeSteps = recipeSteps;
         this.recipeCuisine = recipeCuisine;
@@ -28,8 +32,8 @@ public class Recipes {
         return recipeId;
     }
 
-    public String getRecipeName() {
-        return recipeName;
+    public String getRecipeTitle() {
+        return recipeTitle;
     }
 
     public String getRecipeIngredients() {

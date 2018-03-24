@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/recipeName"
+        android:id="@+id/recipeTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         android:entries="@array/cuisine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/recipeName" />
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
 
     <EditText
         android:id="@+id/addSteps"
@@ -66,7 +66,7 @@
         android:text="Cuisine"
         app:layout_constraintEnd_toStartOf="@+id/cuisineSpinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeName" />
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
 
     <EditText
         android:id="@+id/addLink"
@@ -123,9 +123,12 @@
         android:numStars="5"
         android:rating="3.5"
         android:stepSize="0.5"
+        app:mrb_progressTint="#00c8ff"
+        app:mrb_progressBackgroundTint="#00c8ff"
+        app:mrb_secondaryProgressTint="#00c8ff"
         app:layout_constraintBottom_toTopOf="@+id/cuisineSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/recipeName"
+        app:layout_constraintStart_toEndOf="@+id/recipeTitle"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

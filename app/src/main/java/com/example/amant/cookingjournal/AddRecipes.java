@@ -18,7 +18,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class AddRecipes extends AppCompatActivity {
 
-    private EditText recipeName;
+    private EditText recipeTitle;
     private EditText recipeIngredients;
     private EditText recipeSteps;
     private EditText recipeUrl;
@@ -34,7 +34,7 @@ public class AddRecipes extends AppCompatActivity {
 
         dbRecipes = FirebaseDatabase.getInstance().getReference("recipe");
 
-        recipeName = (EditText) findViewById(R.id.recipeName);
+        recipeTitle = (EditText) findViewById(R.id.recipeTitle);
         recipeIngredients = (EditText) findViewById(R.id.addIngredients);
         recipeSteps = (EditText) findViewById(R.id.addSteps);
         recipeUrl = (EditText) findViewById(R.id.addLink);
@@ -59,7 +59,7 @@ public class AddRecipes extends AppCompatActivity {
     }
 
     private void addRecipe(){
-        String name = recipeName.getText().toString().trim();
+        String name = recipeTitle.getText().toString().trim();
         String ingredients = recipeIngredients.getText().toString().trim();
         String steps = recipeSteps.getText().toString().trim();
         String cuisine = recipeCuisine.getSelectedItem().toString();
@@ -73,26 +73,30 @@ public class AddRecipes extends AppCompatActivity {
             dbRecipes.child(id).setValue(recipe);
 
             Toast.makeText(this,"Recipe Added",Toast.LENGTH_SHORT).show();
+            finish();
         }else{
             if (name.matches(""))
-            {               recipeName.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Recipe Name.",Toast.LENGTH_SHORT).show();
+            {
+                recipeTitle.setBackgroundResource(R.drawable.border_error);
+                recipeTitle.setError("Enter Recipe Name");
                 return;
             }
             else {
-                recipeName.setBackgroundResource(R.drawable.border);
+                recipeTitle.setBackgroundResource(R.drawable.border);
             }
             if (ingredients.matches(""))
-            {               recipeIngredients.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Ingredients.",Toast.LENGTH_SHORT).show();
+            {
+                recipeIngredients.setBackgroundResource(R.drawable.border_error);
+                recipeIngredients.setError("Enter Recipe Ingredients");
                 return;
             }
             else {
                 recipeIngredients.setBackgroundResource(R.drawable.border);
             }
             if (steps.matches(""))
-            {               recipeSteps.setBackgroundResource(R.drawable.border_error);
-                Toast.makeText(this, "Enter Recipe Steps.",Toast.LENGTH_SHORT).show();
+            {
+                recipeSteps.setBackgroundResource(R.drawable.border_error);
+                recipeSteps.setError("Enter Recipe Steps");
                 return;
             }
             else {
