@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:background="@drawable/border"
-    app:cardCornerRadius="2dp"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="10dp"
     app:cardElevation="7dp"
     app:contentPadding="10dp">
 

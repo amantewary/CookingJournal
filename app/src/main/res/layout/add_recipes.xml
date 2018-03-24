@@ -64,6 +64,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Cuisine"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/cuisineSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
