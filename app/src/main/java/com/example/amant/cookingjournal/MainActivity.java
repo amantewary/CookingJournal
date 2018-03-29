@@ -26,12 +26,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
 
     public static final String RECIPE_ID = "recipeId";
-    public static final String RECIPE_TITLE = "recipeTitle";
-    public static final String RECIPE_INGREDIENTS = "recipeIngrdients";
-    public static final String RECIPE_STEPS = "recipeSteps";
-    public static final String RECIPE_CUISINE = "recipeCuisine";
-    public static final String RECIPE_RATING = "recipeRating";
-    public static final String RECIPE_URL = "recipeUrl";
 
     RecyclerView recipeListView;
     List<Recipes> recipeList;

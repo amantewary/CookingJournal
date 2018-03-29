@@ -44,12 +44,12 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, RecipeDetails.class);
                 intent.putExtra(MainActivity.RECIPE_ID, recipes.getRecipeId());
-                intent.putExtra(MainActivity.RECIPE_TITLE, recipes.getRecipeTitle());
-                intent.putExtra(MainActivity.RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
-                intent.putExtra(MainActivity.RECIPE_STEPS, recipes.getRecipeSteps());
-                intent.putExtra(MainActivity.RECIPE_CUISINE, recipes.getRecipeCuisine());
-                intent.putExtra(MainActivity.RECIPE_RATING, recipes.getRecipeRating());
-                intent.putExtra(MainActivity.RECIPE_URL, recipes.getRecipeUrl());
+//                intent.putExtra(MainActivity.RECIPE_TITLE, recipes.getRecipeTitle());
+//                intent.putExtra(MainActivity.RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
+//                intent.putExtra(MainActivity.RECIPE_STEPS, recipes.getRecipeSteps());
+//                intent.putExtra(MainActivity.RECIPE_CUISINE, recipes.getRecipeCuisine());
+//                intent.putExtra(MainActivity.RECIPE_RATING, recipes.getRecipeRating());
+//                intent.putExtra(MainActivity.RECIPE_URL, recipes.getRecipeUrl());
                 context.startActivity(intent);
             }
         });

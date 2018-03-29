@@ -13,6 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class RecipeDetails extends AppCompatActivity {
@@ -21,30 +27,57 @@ public class RecipeDetails extends AppCompatActivity {
     TextView recipeSteps;
     TextView recipeUrl;
     String reviewId;
+    String title;
+    String subtitle;
     FloatingActionButton fab;
     NestedScrollView menuSheet;
-    ConstraintLayout schedulerButton;
+//    ConstraintLayout schedulerButton;
     ConstraintLayout editButton;
     SubtitleCollapsingToolbarLayout collapsingToolbarLayout;
     BottomSheetBehavior menuBehavior;
     MaterialRatingBar recipeRating;
+    Recipes recipe;
+
+    DatabaseReference recipeRef;
+
 //    DatePickerDialog dpd;
 //    java.util.Calendar now;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_details);
-        Intent intent = getIntent();
-        String title = intent.getStringExtra(MainActivity.RECIPE_TITLE);
-        String subtitle = intent.getStringExtra(MainActivity.RECIPE_CUISINE);
         /*
             Used Third-Party Toolbar Wrapper with Subtitle Support.
             https://github.com/HendraAnggrian/collapsingtoolbarlayout-subtitle
             For license information check the README file.
          */
         collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        collapsingToolbarLayout.setTitle(title);
-        collapsingToolbarLayout.setSubtitle(subtitle);
+        recipeIngredients = findViewById(R.id.recipeDetailIngredients);
+        recipeSteps = findViewById(R.id.recipeDetailSteps);
+        recipeUrl = findViewById(R.id.recipeDetailLink);
+        recipeRating = findViewById(R.id.recipeDetailRating);
+        recipeRef = FirebaseDatabase.getInstance().getReference("recipe");
+
+        Intent intent = getIntent();
+        reviewId = intent.getStringExtra(MainActivity.RECIPE_ID);
+        recipeRef.child(reviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipe = dataSnapshot.getValue(Recipes.class);
+                title = recipe.getRecipeTitle();
+                subtitle = recipe.getRecipeCuisine();
+                collapsingToolbarLayout.setTitle(title);
+                collapsingToolbarLayout.setSubtitle(subtitle);
+                recipeIngredients.setText(recipe.getRecipeIngredients());
+                recipeSteps.setText(recipe.getRecipeSteps());
+                recipeUrl.setText(recipe.getRecipeUrl());
+                recipeRating.setRating(recipe.getRecipeRating());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here",""+ databaseError);
+            }
+        });
         collapsingToolbarLayout.setExpandedSubtitleTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,25 +85,6 @@ public class RecipeDetails extends AppCompatActivity {
         menuSheet = findViewById(R.id.menu_sheet);
         menuBehavior = BottomSheetBehavior.from(menuSheet);
         fab = findViewById(R.id.fab2);
-        recipeIngredients = findViewById(R.id.recipeDetailIngredients);
-        recipeSteps = findViewById(R.id.recipeDetailSteps);
-        recipeUrl = findViewById(R.id.recipeDetailLink);
-        recipeRating = findViewById(R.id.recipeDetailRating);
-
-        String ingredients = intent.getStringExtra(MainActivity.RECIPE_INGREDIENTS);
-        String steps = intent.getStringExtra(MainActivity.RECIPE_STEPS);
-        String link = intent.getStringExtra(MainActivity.RECIPE_URL);
-        /*
-        Referred here for understanding how to parse float value from one activity to another.
-        https://stackoverflow.com/questions/24492037/send-float-from-activity-to-activity
-         */
-        Bundle bundle =intent.getExtras();
-        Float rating = bundle.getFloat(MainActivity.RECIPE_RATING);
-
-        recipeIngredients.setText(ingredients);
-        recipeSteps.setText(steps);
-        recipeUrl.setText(link);
-        recipeRating.setRating(rating);
         menuBehavior.setPeekHeight(0);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +97,8 @@ public class RecipeDetails extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        schedulerButton = findViewById(R.id.scheduler_layout);
+//TODO: Need to find a better way to implement reminder.
+//        schedulerButton = findViewById(R.id.scheduler_layout);
 //        scheduler.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -99,7 +113,6 @@ public class RecipeDetails extends AppCompatActivity {
 //            }
 //        });
         editButton = findViewById(R.id.edit_layout);
-        reviewId = intent.getStringExtra(MainActivity.RECIPE_ID);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
