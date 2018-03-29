@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -22,30 +25,42 @@ public class EditRecipe extends AppCompatActivity {
     private EditText recipeIngredients;
     private EditText recipeSteps;
     private EditText recipeUrl;
-    String rId;
-    Intent intent;
     private Spinner recipeCuisine;
     private MaterialRatingBar recipeRating;
-
+    String rId;
+    Intent intent;
+    Recipes recipe;
     DatabaseReference dbRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_recipe);
+        dbRecipes = FirebaseDatabase.getInstance().getReference("recipe");
         intent = getIntent();
         rId = intent.getStringExtra("reviewid");
-        Log.e("Here","create"+ rId);
+        recipeTitle = findViewById(R.id.editRecipeTitle);
+        recipeIngredients = findViewById(R.id.editIngredients);
+        recipeSteps = findViewById(R.id.editSteps);
+        recipeUrl = findViewById(R.id.editLink);
+        recipeCuisine = findViewById(R.id.editCuisineSpinner);
+        recipeRating = findViewById(R.id.editRecipeRating);
 
-        dbRecipes = FirebaseDatabase.getInstance().getReference("recipe");
-
-        recipeTitle = (EditText) findViewById(R.id.editRecipeTitle);
-        recipeIngredients = (EditText) findViewById(R.id.editIngredients);
-        recipeSteps = (EditText) findViewById(R.id.editSteps);
-        recipeUrl = (EditText) findViewById(R.id.editLink);
-        recipeCuisine = (Spinner) findViewById(R.id.editCuisineSpinner);
-        recipeRating = (MaterialRatingBar) findViewById(R.id.editRecipeRating);
-
+        dbRecipes.child(rId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipe = dataSnapshot.getValue(Recipes.class);
+                recipeTitle.setText(recipe.getRecipeTitle());
+                recipeIngredients.setText(recipe.getRecipeIngredients());
+                recipeSteps.setText(recipe.getRecipeSteps());
+                recipeUrl.setText(recipe.getRecipeUrl());
+                recipeRating.setRating(recipe.getRecipeRating());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here",""+ databaseError);
+            }
+        });
     }
 
     @Override
