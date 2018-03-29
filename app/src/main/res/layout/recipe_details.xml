@@ -92,8 +92,11 @@
                     app:cardElevation="0dp">
 
                     <android.support.constraint.ConstraintLayout
+                        android:id="@+id/scheduler_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:id="@+id/scheduler"
@@ -135,6 +138,7 @@
                     app:cardElevation="0dp">
 
                     <android.support.constraint.ConstraintLayout
+                        android:id="@+id/edit_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 

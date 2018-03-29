@@ -2,12 +2,14 @@ package com.example.amant.cookingjournal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.SubtitleCollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,10 +20,16 @@ public class RecipeDetails extends AppCompatActivity {
     TextView recipeIngredients;
     TextView recipeSteps;
     TextView recipeUrl;
+    String reviewId;
     FloatingActionButton fab;
     NestedScrollView menuSheet;
+    ConstraintLayout schedulerButton;
+    ConstraintLayout editButton;
+    SubtitleCollapsingToolbarLayout collapsingToolbarLayout;
     BottomSheetBehavior menuBehavior;
     MaterialRatingBar recipeRating;
+//    DatePickerDialog dpd;
+//    java.util.Calendar now;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +42,7 @@ public class RecipeDetails extends AppCompatActivity {
             https://github.com/HendraAnggrian/collapsingtoolbarlayout-subtitle
             For license information check the README file.
          */
-        SubtitleCollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(title);
         collapsingToolbarLayout.setSubtitle(subtitle);
         collapsingToolbarLayout.setExpandedSubtitleTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
@@ -75,5 +83,32 @@ public class RecipeDetails extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        schedulerButton = findViewById(R.id.scheduler_layout);
+//        scheduler.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                now = Calendar.getInstance();
+//                dpd = DatePickerDialog.newInstance(
+//                        RecipeDetails.this,
+//                        now.get(Calendar.YEAR),
+//                        now.get(Calendar.MONTH),
+//                        now.get(Calendar.DAY_OF_MONTH)
+//                );
+//                dpd.show(getFragmentManager(), "Datepickerdialog");
+//            }
+//        });
+        editButton = findViewById(R.id.edit_layout);
+        reviewId = intent.getStringExtra(MainActivity.RECIPE_ID);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecipeDetails.this,EditRecipe.class);
+                intent.putExtra("reviewid", reviewId);
+                Log.e("Here",""+ reviewId);
+                startActivity(intent);
+                menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
     }
 }
