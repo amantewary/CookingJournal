@@ -1,13 +1,15 @@
 package com.example.amant.cookingjournal;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.SubtitleCollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -26,17 +28,19 @@ public class RecipeDetails extends AppCompatActivity {
     TextView recipeIngredients;
     TextView recipeSteps;
     TextView recipeUrl;
-    String reviewId;
+    String recipeId;
     String title;
     String subtitle;
     FloatingActionButton fab;
     NestedScrollView menuSheet;
 //    ConstraintLayout schedulerButton;
-    ConstraintLayout editButton;
+    CardView editButton;
+    CardView deleteButton;
     SubtitleCollapsingToolbarLayout collapsingToolbarLayout;
     BottomSheetBehavior menuBehavior;
     MaterialRatingBar recipeRating;
     Recipes recipe;
+    Intent intent;
 
     DatabaseReference recipeRef;
 
@@ -58,26 +62,27 @@ public class RecipeDetails extends AppCompatActivity {
         recipeRating = findViewById(R.id.recipeDetailRating);
         recipeRef = FirebaseDatabase.getInstance().getReference("recipe");
 
-        Intent intent = getIntent();
-        reviewId = intent.getStringExtra(MainActivity.RECIPE_ID);
-        recipeRef.child(reviewId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                recipe = dataSnapshot.getValue(Recipes.class);
-                title = recipe.getRecipeTitle();
-                subtitle = recipe.getRecipeCuisine();
-                collapsingToolbarLayout.setTitle(title);
-                collapsingToolbarLayout.setSubtitle(subtitle);
-                recipeIngredients.setText(recipe.getRecipeIngredients());
-                recipeSteps.setText(recipe.getRecipeSteps());
-                recipeUrl.setText(recipe.getRecipeUrl());
-                recipeRating.setRating(recipe.getRecipeRating());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here",""+ databaseError);
-            }
-        });
+        intent = getIntent();
+        recipeId = intent.getStringExtra(MainActivity.RECIPE_ID);
+        //TODO: Old Methods
+//        recipeRef.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                recipe = dataSnapshot.getValue(Recipes.class);
+//                title = recipe.getRecipeTitle();
+//                subtitle = recipe.getRecipeCuisine();
+//                collapsingToolbarLayout.setTitle(title);
+//                collapsingToolbarLayout.setSubtitle(subtitle);
+//                recipeIngredients.setText(recipe.getRecipeIngredients());
+//                recipeSteps.setText(recipe.getRecipeSteps());
+//                recipeUrl.setText(recipe.getRecipeUrl());
+//                recipeRating.setRating(recipe.getRecipeRating());
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("Here",""+ databaseError);
+//            }
+//        });
         collapsingToolbarLayout.setExpandedSubtitleTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,15 +117,60 @@ public class RecipeDetails extends AppCompatActivity {
 //                dpd.show(getFragmentManager(), "Datepickerdialog");
 //            }
 //        });
-        editButton = findViewById(R.id.edit_layout);
+        editButton = findViewById(R.id.edit_card);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecipeDetails.this,EditRecipe.class);
-                intent.putExtra("reviewid", reviewId);
-                Log.e("Here",""+ reviewId);
+                intent.putExtra("recipeid", recipeId);
                 startActivity(intent);
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+        deleteButton = findViewById(R.id.delete_card);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder deleteAlert = new AlertDialog.Builder(RecipeDetails.this);
+                deleteAlert.setTitle("Delete Recipe");
+                deleteAlert.setMessage("Are you sure?");
+                deleteAlert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        recipeRef.child(recipeId).removeValue();
+                        finish();
+                    }
+                });
+                deleteAlert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                deleteAlert.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recipeRef.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipe = dataSnapshot.getValue(Recipes.class);
+                title = recipe.getRecipeTitle();
+                subtitle = recipe.getRecipeCuisine();
+                collapsingToolbarLayout.setTitle(title);
+                collapsingToolbarLayout.setSubtitle(subtitle);
+                recipeIngredients.setText(recipe.getRecipeIngredients());
+                recipeSteps.setText(recipe.getRecipeSteps());
+                recipeUrl.setText(recipe.getRecipeUrl());
+                recipeRating.setRating(recipe.getRecipeRating());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here",""+ databaseError);
             }
         });
     }

@@ -38,7 +38,7 @@ public class EditRecipe extends AppCompatActivity {
         setContentView(R.layout.edit_recipe);
         dbRecipes = FirebaseDatabase.getInstance().getReference("recipe");
         intent = getIntent();
-        rId = intent.getStringExtra("reviewid");
+        rId = intent.getStringExtra("recipeid");
         recipeTitle = findViewById(R.id.editRecipeTitle);
         recipeIngredients = findViewById(R.id.editIngredients);
         recipeSteps = findViewById(R.id.editSteps);
@@ -46,7 +46,7 @@ public class EditRecipe extends AppCompatActivity {
         recipeCuisine = findViewById(R.id.editCuisineSpinner);
         recipeRating = findViewById(R.id.editRecipeRating);
 
-        dbRecipes.child(rId).addValueEventListener(new ValueEventListener() {
+        dbRecipes.child(rId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(Recipes.class);
@@ -80,8 +80,8 @@ public class EditRecipe extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void editRecipe(String reviewId){
-        String id = reviewId;
+    private void editRecipe(String recipeId){
+        String id = recipeId;
         Log.e("Here","func"+ id);
         String name = recipeTitle.getText().toString().trim();
         String ingredients = recipeIngredients.getText().toString().trim();
