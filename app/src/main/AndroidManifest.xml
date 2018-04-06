@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.amant.cookingjournal">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,7 +31,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.amant.cookingjournal.MainActivity" />
         </activity>
-        <activity android:name=".EditRecipe"></activity>
+        <activity android:name=".EditRecipe">
+
+        </activity>
+        <receiver android:name=".NotificationReceiver"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
     </application>
 
 </manifest>

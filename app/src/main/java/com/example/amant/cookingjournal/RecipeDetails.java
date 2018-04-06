@@ -1,5 +1,11 @@
 package com.example.amant.cookingjournal;
 
+
+import android.app.AlarmManager;
+import android.app.DialogFragment;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,9 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-public class RecipeDetails extends AppCompatActivity {
+public class RecipeDetails extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
     TextView recipeIngredients;
     TextView recipeSteps;
@@ -33,7 +42,7 @@ public class RecipeDetails extends AppCompatActivity {
     String subtitle;
     FloatingActionButton fab;
     NestedScrollView menuSheet;
-//    ConstraintLayout schedulerButton;
+    CardView schedulerButton;
     CardView editButton;
     CardView deleteButton;
     SubtitleCollapsingToolbarLayout collapsingToolbarLayout;
@@ -43,9 +52,6 @@ public class RecipeDetails extends AppCompatActivity {
     Intent intent;
 
     DatabaseReference recipeRef;
-
-//    DatePickerDialog dpd;
-//    java.util.Calendar now;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,25 +70,6 @@ public class RecipeDetails extends AppCompatActivity {
 
         intent = getIntent();
         recipeId = intent.getStringExtra(MainActivity.RECIPE_ID);
-        //TODO: Old Methods
-//        recipeRef.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                recipe = dataSnapshot.getValue(Recipes.class);
-//                title = recipe.getRecipeTitle();
-//                subtitle = recipe.getRecipeCuisine();
-//                collapsingToolbarLayout.setTitle(title);
-//                collapsingToolbarLayout.setSubtitle(subtitle);
-//                recipeIngredients.setText(recipe.getRecipeIngredients());
-//                recipeSteps.setText(recipe.getRecipeSteps());
-//                recipeUrl.setText(recipe.getRecipeUrl());
-//                recipeRating.setRating(recipe.getRecipeRating());
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e("Here",""+ databaseError);
-//            }
-//        });
         collapsingToolbarLayout.setExpandedSubtitleTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,21 +89,18 @@ public class RecipeDetails extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//TODO: Need to find a better way to implement reminder.
-//        schedulerButton = findViewById(R.id.scheduler_layout);
-//        scheduler.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                now = Calendar.getInstance();
-//                dpd = DatePickerDialog.newInstance(
-//                        RecipeDetails.this,
-//                        now.get(Calendar.YEAR),
-//                        now.get(Calendar.MONTH),
-//                        now.get(Calendar.DAY_OF_MONTH)
-//                );
-//                dpd.show(getFragmentManager(), "Datepickerdialog");
-//            }
-//        });
+
+        schedulerButton = findViewById(R.id.scheduler_card);
+        schedulerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                DialogFragment timePicker = new TimePicker();
+                timePicker.show(getFragmentManager(), "time picker");
+                menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
         editButton = findViewById(R.id.edit_card);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +111,7 @@ public class RecipeDetails extends AppCompatActivity {
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
+
         deleteButton = findViewById(R.id.delete_card);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,5 +158,22 @@ public class RecipeDetails extends AppCompatActivity {
                 Log.e("Here",""+ databaseError);
             }
         });
+    }
+
+    @Override
+    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
+
+        Calendar calender = Calendar.getInstance();
+        calender.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calender.set(Calendar.MINUTE,minute);
+        calender.set(Calendar.SECOND,0);
+        calender.set(Calendar.MILLISECOND,0);
+        long timeInMillis = calender.getTimeInMillis();
+        final int reqId = (int) System.currentTimeMillis();
+        AlarmManager cookingAlarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(RecipeDetails.this, NotificationReceiver.class);
+        intent.putExtra("recipe",title);
+        PendingIntent reminder = PendingIntent.getBroadcast(this, reqId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        cookingAlarm.setExact(AlarmManager.RTC_WAKEUP, timeInMillis,reminder);
     }
 }
