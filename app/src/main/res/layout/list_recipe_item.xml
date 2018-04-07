@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorSecondaryDark"
     app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
     app:cardUseCompatPadding="true"
@@ -12,8 +13,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="start">
+        android:layout_gravity="start"
+        android:orientation="vertical">
 
 
         <TextView
@@ -25,6 +26,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Recipe Name"
+            android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,14 +37,17 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Cuisine"
+            android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewRecipeName" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:orientation="vertical">
+
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/viewRecipeRating"
             style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
@@ -56,6 +61,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/viewRecipeName"
             app:layout_constraintTop_toTopOf="parent"
-            app:mrb_progressTint="#00c8ff" />
+            app:mrb_progressTint="@color/colorPrimary" />
     </LinearLayout>
 </android.support.v7.widget.CardView>
