@@ -33,9 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="delete_icon" />
-                                      <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="d50000" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="D:\Courses\AndroidProjects\CookingJournal\app\src\main\res\drawable\launcher_icon.png" />
+                                      <entry key="outputName" value="notify_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -62,7 +62,6 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
                                       <entry key="foregroundImage" value="D:\Courses\AndroidProjects\CookingJournal\app\src\main\res\drawable\launcher_icon.png" />
                                     </map>
                                   </option>
@@ -75,13 +74,17 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="backgroundColor" value="00c8ff" />
                                       <entry key="imageAsset" value="D:\Courses\AndroidProjects\CookingJournal\app\src\main\res\drawable\launcher_icon.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

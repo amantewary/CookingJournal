@@ -86,6 +86,7 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
         menuSheet = findViewById(R.id.menu_sheet);
         menuBehavior = BottomSheetBehavior.from(menuSheet);
         fab = findViewById(R.id.fab2);
+        menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         menuBehavior.setPeekHeight(0);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

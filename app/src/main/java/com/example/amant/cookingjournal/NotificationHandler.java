@@ -52,7 +52,7 @@ public class NotificationHandler extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.notify_icon)
                 .setAutoCancel(true)
                 .setContentIntent(clickPendingIntent);
     }
