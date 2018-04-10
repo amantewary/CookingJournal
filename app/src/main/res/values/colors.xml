@@ -9,4 +9,5 @@
     <color name="colorSecondaryLight">#484848</color>
     <color name="colorAppBackground">#212121</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorHint">#9e9e9e</color>
 </resources>

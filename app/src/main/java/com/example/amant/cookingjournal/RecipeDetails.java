@@ -32,8 +32,17 @@ import java.util.Calendar;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-public class RecipeDetails extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
+public class RecipeDetails extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
+    /*
+        1. Used a stock image for adding in Collapsing Toolbar.
+        Image Source: https://pietrerossepalinuro.it/wp-content/uploads/2018/02/spaghetti-ingredients-2378728_960_720-960x507.jpg
+
+        2. Used a Third-Party Rating Bar.
+        https://github.com/DreaminginCodeZH/MaterialRatingBar
+        For license information check the README file.
+     */
+    MaterialRatingBar recipeRating;
     TextView recipeIngredients;
     TextView recipeSteps;
     TextView recipeUrl;
@@ -47,17 +56,17 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
     CardView deleteButton;
     SubtitleCollapsingToolbarLayout collapsingToolbarLayout;
     BottomSheetBehavior menuBehavior;
-    MaterialRatingBar recipeRating;
     Recipes recipe;
     Intent intent;
 
     DatabaseReference recipeRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_details);
         /*
-            Used Third-Party Toolbar Wrapper with Subtitle Support.
+            Used a Third-Party Toolbar Wrapper with Subtitle Support.
             https://github.com/HendraAnggrian/collapsingtoolbarlayout-subtitle
             For license information check the README file.
          */
@@ -81,9 +90,9 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(menuBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                if (menuBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     menuBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }else{
+                } else {
                     menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
@@ -94,7 +103,6 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
         schedulerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 DialogFragment timePicker = new TimePicker();
                 timePicker.show(getFragmentManager(), "time picker");
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -105,7 +113,7 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RecipeDetails.this,EditRecipe.class);
+                Intent intent = new Intent(RecipeDetails.this, EditRecipe.class);
                 intent.putExtra("recipeid", recipeId);
                 startActivity(intent);
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -153,9 +161,10 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
                 recipeUrl.setText(recipe.getRecipeUrl());
                 recipeRating.setRating(recipe.getRecipeRating());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here",""+ databaseError);
+                Log.e("Here", "" + databaseError);
             }
         });
     }
@@ -163,17 +172,29 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
     @Override
     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
 
+        /*
+            Setting the Calendar instance to the time picked
+            using TimePicker Dialog
+         */
         Calendar calender = Calendar.getInstance();
-        calender.set(Calendar.HOUR_OF_DAY,hourOfDay);
-        calender.set(Calendar.MINUTE,minute);
-        calender.set(Calendar.SECOND,0);
-        calender.set(Calendar.MILLISECOND,0);
+        calender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calender.set(Calendar.MINUTE, minute);
+        calender.set(Calendar.SECOND, 0);
+        calender.set(Calendar.MILLISECOND, 0);
+        /*
+            Converting Time to millisecond for setting it in AlarmManager &
+            Creating a dynamic requestId using current system time.
+         */
         long timeInMillis = calender.getTimeInMillis();
-        final int reqId = (int) System.currentTimeMillis();
+        final int requestId = (int) System.currentTimeMillis();
+        /*
+            Setting an AlarmManager and passing the intent to NotificationReceiver.java
+         */
         AlarmManager cookingAlarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(RecipeDetails.this, NotificationReceiver.class);
-        intent.putExtra("recipe",title);
-        PendingIntent reminder = PendingIntent.getBroadcast(this, reqId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        cookingAlarm.setExact(AlarmManager.RTC_WAKEUP, timeInMillis,reminder);
+        intent.putExtra("recipe", title);
+        PendingIntent reminder = PendingIntent.getBroadcast(this, requestId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        cookingAlarm.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, reminder);
+        Toast.makeText(this, "Voila! We will remind you when its time to cook.", Toast.LENGTH_LONG).show();
     }
 }

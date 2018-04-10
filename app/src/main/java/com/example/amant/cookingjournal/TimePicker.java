@@ -8,6 +8,11 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 public class TimePicker extends DialogFragment {
+
+    /*
+        Creating a TimePicker Dialog for allowing user to
+        set a cooking reminder.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar cal = Calendar.getInstance();

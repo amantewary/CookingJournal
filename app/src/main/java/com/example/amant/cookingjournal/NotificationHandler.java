@@ -16,37 +16,43 @@ public class NotificationHandler extends ContextWrapper {
     public static final String channelName = "Channel";
 
     private NotificationManager manager;
+
     public NotificationHandler(Context base) {
         super(base);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
         }
     }
+
+    /*
+        Referred here for creating a NotificationChannel
+        https://stackoverflow.com/a/47303763/2716018
+     */
     @TargetApi(Build.VERSION_CODES.O)
     public void createChannel() {
-        NotificationChannel channel = new NotificationChannel(channelID,channelName, NotificationManager.IMPORTANCE_HIGH);
-        channel.enableLights(true);
-        channel.enableVibration(true);
-        channel.setLightColor(R.color.colorPrimary);
-        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationChannel newChannel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
+        newChannel.enableLights(true);
+        newChannel.enableVibration(true);
+        newChannel.setLightColor(R.color.colorPrimary);
+        newChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
 
-        getManager().createNotificationChannel(channel);
+        getManager().createNotificationChannel(newChannel);
     }
 
-    public NotificationManager getManager(){
-        if(manager == null){
+    public NotificationManager getManager() {
+        if (manager == null) {
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return manager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String title, String message){
-        Intent clickIntent = new Intent(this,MainActivity.class);
+    public NotificationCompat.Builder getChannelNotification(String title, String message) {
+        Intent clickIntent = new Intent(this, MainActivity.class);
         PendingIntent clickPendingIntent = PendingIntent.getActivity(this, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setAutoCancel(true)
                 .setContentIntent(clickPendingIntent);
     }
