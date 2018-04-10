@@ -6,6 +6,10 @@ package com.example.amant.cookingjournal;
 
 public class Recipes {
 
+    /*
+        This is a handler for adding and retrieving recipes,
+     */
+
     private String recipeId;
     private String recipeTitle;
     private String recipeIngredients;

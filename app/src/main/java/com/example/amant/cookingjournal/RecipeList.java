@@ -19,6 +19,10 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class RecipeList extends RecyclerView.Adapter<RecipeList.ViewHolder> {
 
+    /*
+        This is an Adapter for the recycler view in the MainActivity.java
+     */
+
     private Context context;
     private List<Recipes> recipesList;
 
@@ -44,12 +48,6 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, RecipeDetails.class);
                 intent.putExtra(MainActivity.RECIPE_ID, recipes.getRecipeId());
-//                intent.putExtra(MainActivity.RECIPE_TITLE, recipes.getRecipeTitle());
-//                intent.putExtra(MainActivity.RECIPE_INGREDIENTS, recipes.getRecipeIngredients());
-//                intent.putExtra(MainActivity.RECIPE_STEPS, recipes.getRecipeSteps());
-//                intent.putExtra(MainActivity.RECIPE_CUISINE, recipes.getRecipeCuisine());
-//                intent.putExtra(MainActivity.RECIPE_RATING, recipes.getRecipeRating());
-//                intent.putExtra(MainActivity.RECIPE_URL, recipes.getRecipeUrl());
                 context.startActivity(intent);
             }
         });
@@ -61,13 +59,18 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        /*
+            Used a Third-Party Rating Bar.
+            https://github.com/DreaminginCodeZH/MaterialRatingBar
+            For license information check the README file.
+        */
+        MaterialRatingBar recipeRatings;
         TextView recipeName;
         TextView recipeCuisine;
-        MaterialRatingBar recipeRatings;
         View parentView;
 
-        public ViewHolder(@NonNull View view){
+        public ViewHolder(@NonNull View view) {
             super(view);
             this.recipeName = view.findViewById(R.id.viewRecipeName);
             this.recipeCuisine = view.findViewById(R.id.viewCuisine);
