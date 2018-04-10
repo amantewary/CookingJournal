@@ -36,7 +36,7 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
 
     /*
         1. Used a stock image for adding in Collapsing Toolbar.
-        Image Source: https://pietrerossepalinuro.it/wp-content/uploads/2018/02/spaghetti-ingredients-2378728_960_720-960x507.jpg
+        Image Source: https://pixabay.com/en/italian-cuisine-eat-2378729/
 
         2. Used a Third-Party Rating Bar.
         https://github.com/DreaminginCodeZH/MaterialRatingBar
@@ -88,6 +88,9 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
         fab = findViewById(R.id.fab2);
         menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         menuBehavior.setPeekHeight(0);
+        /*
+            Floating Action Button for accessing bottomsheet menu.
+         */
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +102,9 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        /*
+            Making layout work as button for opening time picker.
+         */
         schedulerButton = findViewById(R.id.scheduler_card);
         schedulerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +114,9 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
-
+        /*
+            Making layout work as button for editRecipe activity.
+         */
         editButton = findViewById(R.id.edit_card);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +127,9 @@ public class RecipeDetails extends AppCompatActivity implements TimePickerDialog
                 menuBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
-
+        /*
+            Making layout work as button for deleting the recipe.
+         */
         deleteButton = findViewById(R.id.delete_card);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

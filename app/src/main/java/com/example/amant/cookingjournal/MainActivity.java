@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
     /*
         Function for searching recipe in database.
         User can search for recipe using the
-        name of the recipe or or user will get suggestion
-        for type of cuisine.
+        name of the recipe. User will also get suggestion
+        for the type of cuisine.
      */
     public void searchDatabase(final String query) {
         databaseReference.addValueEventListener(new ValueEventListener() {
