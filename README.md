@@ -2,7 +2,6 @@
 
 ## Aman Tewary
 
-## B00782684
 
 ## PROJECT DETAILS
 
